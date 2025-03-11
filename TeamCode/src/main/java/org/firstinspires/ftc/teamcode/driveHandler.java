@@ -1,17 +1,13 @@
 package org.firstinspires.ftc.teamcode;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.Range;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
 
-public final class drive {
-    private LinearOpMode teleOp1 = null;
+public class driveHandler {
+    private LinearOpMode driveOpMode = null;
 
     private DcMotor FL = null;
     private DcMotor FR = null;
@@ -20,16 +16,14 @@ public final class drive {
 
     private Servo piston = null;
 
-    public drive (LinearOpMode opmode) {
-        teleOp1 = opmode;
-    }
-    public void init() {
+    public driveHandler(LinearOpMode opmode) {driveOpMode = opmode;}
+    public void boot() {
         //front left and right, back left and right
-        FL = teleOp1.hardwareMap.get(DcMotor.class, "FL");
-        FR = teleOp1.hardwareMap.get(DcMotor.class, "FR");
-        BL = teleOp1.hardwareMap.get(DcMotor.class, "BL");
-        BR = teleOp1.hardwareMap.get(DcMotor.class, "BR");
-        piston = teleOp1.hardwareMap.get(Servo.class, "piston");
+        FL = driveOpMode.hardwareMap.get(DcMotor.class, "FL");
+        FR = driveOpMode.hardwareMap.get(DcMotor.class, "FR");
+        BL = driveOpMode.hardwareMap.get(DcMotor.class, "BL");
+        BR = driveOpMode.hardwareMap.get(DcMotor.class, "BR");
+        piston = driveOpMode.hardwareMap.get(Servo.class, "piston");
 
         FL.setDirection(DcMotor.Direction.REVERSE);
         FR.setDirection(DcMotor.Direction.FORWARD);
@@ -53,7 +47,7 @@ public final class drive {
         BL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         BR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        IMU imu = HardwareMap.get(IMU.class, "imu");
+        IMU imu = driveOpMode.hardwareMap.get(IMU.class, "imu");
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
                 RevHubOrientationOnRobot.LogoFacingDirection.RIGHT,
                 RevHubOrientationOnRobot.UsbFacingDirection.UP));
