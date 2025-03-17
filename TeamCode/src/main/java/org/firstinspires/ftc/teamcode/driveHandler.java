@@ -5,6 +5,8 @@ import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+
 
 public class driveHandler {
     private LinearOpMode driveOpMode = null;
@@ -15,6 +17,8 @@ public class driveHandler {
     private DcMotor BR = null;
 
     private Servo piston = null;
+
+    IMU imu = driveOpMode.hardwareMap.get(IMU.class, "imu");
 
     public driveHandler(LinearOpMode opmode) {driveOpMode = opmode;}
     public void boot() {
@@ -47,17 +51,46 @@ public class driveHandler {
         BL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         BR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        IMU imu = driveOpMode.hardwareMap.get(IMU.class, "imu");
+
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
                 RevHubOrientationOnRobot.LogoFacingDirection.RIGHT,
                 RevHubOrientationOnRobot.UsbFacingDirection.UP));
         imu.initialize(parameters);
+
+
     }
-    public void botDrive(double y,double x,double rx){
+    public void botDrive(double y,double x,double rx, double speed){
+        //this drive code is FIELD CENTRIC, if you want to switch it to ROBOT CENTRIC, replace the rot variable with their regular versions
+        //get bot heading
+        double botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+
+        //adjust values to account for bot heading
+        double rotX = x * Math.cos(-botHeading) - y * Math.sin(-botHeading);
+        double rotY = x * Math.sin(-botHeading) + y * Math.cos(-botHeading);
+
+        //set values to account for speed
+        rotX = rotX * speed;
+        rotY = rotY * speed;
+        rx = rx * speed;
+
+        //calculate motor powers
         double denom = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
-        double FLpower = (y + x + rx) / denom;
-        double FRpower = (y - x - rx) / denom;
-        double BLpower = (y - x + rx) / denom;
-        double BRpower = (y + x - rx) / denom;
+        double FLpower = (rotY + rotX + rx) / denom;
+        double FRpower = (rotY - rotX - rx) / denom;
+        double BLpower = (rotY - rotX + rx) / denom;
+        double BRpower = (rotY + rotX - rx) / denom;
+
+        //set motor powers
+        FL.setPower(FLpower);
+        FR.setPower(FRpower);
+        BL.setPower(BLpower);
+        BR.setPower(BRpower);
+    }
+
+    public void botControl(int modeNum){
+        //handle actions outside of driving
+        if(modeNum == 0){
+
+        }
     }
 }
