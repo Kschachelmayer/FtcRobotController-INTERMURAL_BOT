@@ -4,25 +4,28 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-
+import org.firstinspires.ftc.teamcode.teleOp1;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 
 
 public class driveHandler {
-    private LinearOpMode driveOpMode = null;
 
+    private final LinearOpMode driveOpMode;
+
+    public IMU imu;
     private DcMotor FL = null;
     private DcMotor FR = null;
     private DcMotor BL = null;
     private DcMotor BR = null;
-
     private Servo piston = null;
 
-    IMU imu = driveOpMode.hardwareMap.get(IMU.class, "imu");
+    //IMU imu = driveOpMode.hardwareMap.get(IMU.class, "imu");
 
     public driveHandler(LinearOpMode opmode) {driveOpMode = opmode;}
     public void boot() {
         //front left and right, back left and right
+        IMU imu = driveOpMode.hardwareMap.get(IMU.class, "imu");
         FL = driveOpMode.hardwareMap.get(DcMotor.class, "FL");
         FR = driveOpMode.hardwareMap.get(DcMotor.class, "FR");
         BL = driveOpMode.hardwareMap.get(DcMotor.class, "BL");
