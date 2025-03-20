@@ -96,12 +96,6 @@ public class driveHandler {
             BRpower = (rotY + rotX - rx);
         }
 
-
-        //get bot heading
-
-
-
-
         //set motor powers
         FL.setPower(FLpower);
         FR.setPower(FRpower);
