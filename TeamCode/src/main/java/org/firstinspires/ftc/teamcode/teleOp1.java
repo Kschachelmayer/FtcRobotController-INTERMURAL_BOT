@@ -16,7 +16,7 @@ public class teleOp1 extends LinearOpMode {
 
         robot.boot();
 
-        double driveSpeed = 0.5;
+        double driveSpeed = 1;
 
         telemetry.addData("Status", "Initialized");
         telemetry.update();
@@ -40,10 +40,24 @@ public class teleOp1 extends LinearOpMode {
             double x = gamepad1.left_stick_x;
             double rx = gamepad1.right_stick_x;
 
+            //D-Pad Driving
+            if (gamepad1.dpad_up) {
+                y = 1;
+            } else if (gamepad1.dpad_down) {
+                y = -1;
+            } else if (gamepad1.dpad_left) {
+                x = -1;
+            } else if (gamepad1.dpad_right) {
+                x = 1;
+            }
 
             if(gamepad1.left_stick_button){
                 //toggle field centric mode
                 robot.fieldCentric = !robot.fieldCentric;
+            }
+            if(gamepad1.right_stick_button){
+                //reset heading
+                robot.imu.resetYaw();
             }
 
             robot.botDrive(y, x, rx, driveSpeed, robot.fieldCentric);
