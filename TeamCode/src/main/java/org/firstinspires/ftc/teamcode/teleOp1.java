@@ -43,11 +43,14 @@ public class teleOp1 extends LinearOpMode {
             //D-Pad Driving
             if (gamepad1.dpad_up) {
                 y = 1;
-            } else if (gamepad1.dpad_down) {
+            }
+            if (gamepad1.dpad_down) {
                 y = -1;
-            } else if (gamepad1.dpad_left) {
+            }
+            if (gamepad1.dpad_left) {
                 x = -1;
-            } else if (gamepad1.dpad_right) {
+            }
+            if (gamepad1.dpad_right) {
                 x = 1;
             }
 
