@@ -18,8 +18,8 @@ public class driveHandler {
     public DcMotor FL = null;
     public DcMotor FR = null;
     public DcMotor BL = null;
-    public   DcMotor BR = null;
-    //private Servo piston = null;
+    public DcMotor BR = null;
+    public DcMotor spinner = null;
     public boolean fieldCentric = false;
 
     double FLpower = 0;
@@ -37,30 +37,33 @@ public class driveHandler {
         FR = driveOpMode.hardwareMap.get(DcMotor.class, "FR");
         BL = driveOpMode.hardwareMap.get(DcMotor.class, "BL");
         BR = driveOpMode.hardwareMap.get(DcMotor.class, "BR");
-        //piston = driveOpMode.hardwareMap.get(Servo.class, "piston");
+        spinner = driveOpMode.hardwareMap.get(DcMotor.class, "spinner");
 
         FL.setDirection(DcMotorSimple.Direction.REVERSE);
         FR.setDirection(DcMotorSimple.Direction.REVERSE);
         BL.setDirection(DcMotorSimple.Direction.FORWARD);
         BR.setDirection(DcMotorSimple.Direction.FORWARD);
+        spinner.setDirection(DcMotorSimple.Direction.FORWARD);
 
         FL.setPower(0);
         FR.setPower(0);
         BL.setPower(0);
         BR.setPower(0);
+        spinner.setPower(0);
 
 
         FL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         FR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         BL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         BR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        spinner.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        //piston.setPosition(0);
 
         FL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         FR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         BL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         BR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        spinner.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
                 RevHubOrientationOnRobot.LogoFacingDirection.RIGHT,
@@ -106,7 +109,11 @@ public class driveHandler {
     public void botControl(int modeNum){
         //handle actions outside of driving
         if(modeNum == 0){
-
+            if(spinner.getPower() != 0){
+                spinner.setPower(0);
+            }else{
+                spinner.setPower(0.5);
+            }
         }
     }
 }
